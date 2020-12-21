@@ -22,13 +22,15 @@ class MainViewModel : ViewModel() {
 
     private fun getAsteroidsFromNeoWs(){
 /*        val jsonResult= AsteroidsApi.retrofitService.getAsteroids()
-        var asteroids = parseAsteroidsJsonResult(JSONObject(jsonResult.toString()))*/
+        var asteroids = parseAsteroidsJsonResult(JSONObject(jsonResult.toString())*/
         AsteroidsApi.retrofitService.getAsteroids().enqueue(object: Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 _response.value = "Failure: " + t.message
             }
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                _response.value = response.body()
+                var list = parseAsteroidsJsonResult(JSONObject(response.body()!!))
+
+                _response.value = list.toString() //response.body()
             }
         })
     }
