@@ -29,7 +29,6 @@ class MainViewModel : ViewModel() {
             }
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 var list = parseAsteroidsJsonResult(JSONObject(response.body()!!))
-
                 _response.value = list.toString() //response.body()
             }
         })
