@@ -3,8 +3,10 @@ package com.udacity.asteroidradar.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.network.Asteroid
 import com.udacity.asteroidradar.network.AsteroidsApi
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,12 +21,14 @@ class MainViewModel : ViewModel() {
         get() = _response
 
     private fun getAsteroidsFromNeoWs(){
-        AsteroidsApi.retrofitService.getAsteroids().enqueue(object: Callback<List<Asteroid>>{
-            override fun onFailure(call: Call<List<Asteroid>>, t: Throwable) {
+/*        val jsonResult= AsteroidsApi.retrofitService.getAsteroids()
+        var asteroids = parseAsteroidsJsonResult(JSONObject(jsonResult.toString()))*/
+        AsteroidsApi.retrofitService.getAsteroids().enqueue(object: Callback<String>{
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 _response.value = "Failure: " + t.message
             }
-            override fun onResponse(call: Call<List<Asteroid>>, response: Response<List<Asteroid>>) {
-                _response.value = "Success : ${response.body()?.size} asteroids near Earth detected"
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                _response.value = response.body()
             }
         })
     }

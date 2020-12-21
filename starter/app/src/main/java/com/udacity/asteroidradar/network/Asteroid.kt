@@ -11,5 +11,5 @@ data class Asteroid(val id: Long,
                     @Json(name= "absolute_magnitude")val absoluteMagnitude: Double,
                     @Json(name= "estimated_diameter")val estimatedDiameter: Double,
                     @Json(name= "relative_velocity")val relativeVelocity: Double,
-                    val distanceFromEarth: Double,
-                    val isPotentiallyHazardous: Boolean) : Parcelable
+                    @Json(name="miss_distance")val distanceFromEarth: Double,
+                    @Json(name="is_potentially_hazardous_asteroid")val isPotentiallyHazardous: Boolean) : Parcelable
