@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.network
+package com.udacity.asteroidradar.domain
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
@@ -12,4 +12,8 @@ data class Asteroid(val id: Long,
                     val estimatedDiameter: Double,
                     val relativeVelocity: Double,
                     val distanceFromEarth: Double,
-                    val isPotentiallyHazardous: Boolean) : Parcelable
+                    val isPotentiallyHazardous: Boolean) : Parcelable{
+
+fun longConverterToString(id: Long): String{
+    return id.toString()
+}}

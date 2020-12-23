@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
-import com.udacity.asteroidradar.network.Asteroid
+import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.network.AsteroidsApi
+import com.udacity.asteroidradar.domain.DailyImage
+import com.udacity.asteroidradar.network.ImageApi
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,28 +15,52 @@ import retrofit2.Response
 
 class MainViewModel : ViewModel() {
 
-    // The internal MutableLiveData String that stores the most recent response
-    private val _response = MutableLiveData<String>()
-
-    // The external immutable LiveData for the response String
-    val response: LiveData<String>
+    private val _response = MutableLiveData<List<Asteroid>>()
+    val response: LiveData<List<Asteroid>>
         get() = _response
 
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String>
+        get() = _error
+
+    private val _dailyImage = MutableLiveData<DailyImage>()
+    val dailyImage: LiveData<DailyImage>
+        get() = _dailyImage
+    /**************************************************************************************/
     private fun getAsteroidsFromNeoWs(){
-/*        val jsonResult= AsteroidsApi.retrofitService.getAsteroids()
-        var asteroids = parseAsteroidsJsonResult(JSONObject(jsonResult.toString())*/
-        AsteroidsApi.retrofitService.getAsteroids().enqueue(object: Callback<String>{
+    /*        viewModelScope.launch {
+            val listResult = AsteroidsApi.retrofitService.getAsteroidsAsync()
+            try {
+                _response.value = listResult.toString()
+            } catch (e: Exception) {
+                _response.value = "Failure: ${e.message}"
+            }
+        }*/
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        AsteroidsApi.retrofitService.getAsteroids().enqueue(object: Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
-                _response.value = "Failure: " + t.message
+                _error.value = "Failure: " + t.message
             }
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                var list = parseAsteroidsJsonResult(JSONObject(response.body()!!))
-                _response.value = list.toString() //response.body()
+                val list = parseAsteroidsJsonResult(JSONObject(response.body()!!))
+                _response.value = list.toList()
             }
         })
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ImageApi.retrofitService.getImage().enqueue(object: Callback<DailyImage> {
+            override fun onFailure(call: Call<DailyImage>, t: Throwable) {
+                _error.value = "Failure: " + t.message
+            }
+            override fun onResponse(call: Call<DailyImage>, response: Response<DailyImage>) {
+                println(response.body())
+                _dailyImage.value = response.body()
+            }
+        })
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
-
+    /**************************************************************************************/
     init{
         getAsteroidsFromNeoWs()
     }
+
 }
