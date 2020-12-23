@@ -69,7 +69,7 @@ fun NetworkDailyImageContainer.asDomainModel(): List<DailyImage> {
     }
 }
 
-fun NetworkDailyImageContainer.asDatabaseModel(): List<DatabaseDailyImageEntity> {
+fun NetworkDailyImageContainer.asDatabaseModel(): Array<DatabaseDailyImageEntity> {
     return dailyImages.map {
         DatabaseDailyImageEntity(
             date = it.date,
@@ -79,5 +79,5 @@ fun NetworkDailyImageContainer.asDatabaseModel(): List<DatabaseDailyImageEntity>
             serviceVersion = it.serviceVersion,
             title = it.title,
             url = it.url)
-    }
+    }.toTypedArray()
 }

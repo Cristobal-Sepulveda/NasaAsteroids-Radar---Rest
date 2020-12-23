@@ -70,7 +70,7 @@ fun NetworkAsteroidsContainer.asDomainModel(): List<Asteroid> {
     }
 }
 
-fun NetworkAsteroidsContainer.asDatabaseModel(): List<DatabaseAsteroidEntity> {
+fun NetworkAsteroidsContainer.asDatabaseModel(): Array<DatabaseAsteroidEntity> {
     return asteroids.map {
         DatabaseAsteroidEntity(
             id = it.id,
@@ -81,5 +81,5 @@ fun NetworkAsteroidsContainer.asDatabaseModel(): List<DatabaseAsteroidEntity> {
             relativeVelocity = it.relativeVelocity,
             distanceFromEarth = it.distanceFromEarth,
             isPotentiallyHazardous = it.isPotentiallyHazardous)
-    }
+    }.toTypedArray()
 }

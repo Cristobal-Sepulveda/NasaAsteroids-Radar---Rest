@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.database
+package com.udacity.asteroidradar.database.databaseObjects
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
