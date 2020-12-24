@@ -5,7 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.api.AsteroidAdapter
+import com.udacity.asteroidradar.Adapter.AsteroidAdapter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {

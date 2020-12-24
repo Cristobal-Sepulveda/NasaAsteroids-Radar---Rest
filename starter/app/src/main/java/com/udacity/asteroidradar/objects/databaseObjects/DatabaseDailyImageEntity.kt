@@ -1,12 +1,12 @@
-package com.udacity.asteroidradar.database.databaseObjects
+package com.udacity.asteroidradar.objects.databaseObjects
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
-import com.udacity.asteroidradar.domain.DailyImage
+import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 
 @Entity
-data class DatabaseDailyImageEntity constructor(
+data class DatabaseDailyImageEntity(
     @PrimaryKey
     val date: String,
     val explanation: String,

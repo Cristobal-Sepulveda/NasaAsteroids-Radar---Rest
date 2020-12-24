@@ -1,12 +1,11 @@
-package com.udacity.asteroidradar.database.databaseObjects
+package com.udacity.asteroidradar.objects.databaseObjects
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.udacity.asteroidradar.domain.Asteroid
-import com.udacity.asteroidradar.domain.DailyImage
+import com.udacity.asteroidradar.network.Asteroid
 
 @Entity
-data class DatabaseAsteroidEntity constructor(
+data class DatabaseAsteroidEntity(
     @PrimaryKey
     val id: Long,
     val codename: String,

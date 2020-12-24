@@ -15,12 +15,12 @@
  *
  */
 
-package com.udacity.asteroidradar.network
+package com.udacity.asteroidradar.objects.dataTransferObjects
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.udacity.asteroidradar.database.DatabaseDailyImageEntity
-import com.udacity.asteroidradar.domain.DailyImage
+import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
+import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 
 /**
  * DataTransferObjects go in this file. These are responsible for parsing responses from the server

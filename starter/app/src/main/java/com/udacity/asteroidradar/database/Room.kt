@@ -20,8 +20,8 @@ package com.udacity.asteroidradar.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.udacity.asteroidradar.database.databaseObjects.DatabaseAsteroidEntity
-import com.udacity.asteroidradar.database.databaseObjects.DatabaseDailyImageEntity
+import com.udacity.asteroidradar.objects.databaseObjects.DatabaseAsteroidEntity
+import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
 
 @Dao
 interface AsteroidsDao {
@@ -41,20 +41,30 @@ interface DailyImageDao{
     fun insertImage(vararg videos: DatabaseDailyImageEntity)
 }
 
-@Database(entities = [AsteroidsDao::class, DailyImageDao::class], version = 1, exportSchema = false)
-abstract class DATABASE: RoomDatabase(){
+@Database(entities = [DatabaseAsteroidEntity::class, DatabaseDailyImageEntity::class],
+            version = 1,
+            exportSchema = false)
+abstract class DATABASE: RoomDatabase() {
     abstract val asteroidsDao: AsteroidsDao
     abstract val imageDao: DailyImageDao
-}
 
-private lateinit var INSTANCE: DATABASE
-fun getDatabase(context:Context): DATABASE{
-    synchronized(DATABASE::class.java){
-        if(!::INSTANCE.isInitialized){
-            INSTANCE = Room.databaseBuilder(context.applicationContext,
-            DATABASE::class.java,
-            "DATABASE").build()
+    companion object {
+        @Volatile
+        private var INSTANCE: DATABASE? = null
+        fun getDatabase(context: Context): DATABASE {
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                            context.applicationContext,
+                            DATABASE::class.java,
+                            "DATABASE")
+                            .fallbackToDestructiveMigration()
+                            .build()
+                    INSTANCE = instance
+                }
+                return instance
+            }
         }
     }
-    return INSTANCE
 }

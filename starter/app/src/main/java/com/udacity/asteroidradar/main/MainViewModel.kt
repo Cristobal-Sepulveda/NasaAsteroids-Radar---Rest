@@ -3,10 +3,10 @@ package com.udacity.asteroidradar.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
-import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.network.Asteroid
 import com.udacity.asteroidradar.network.AsteroidsApi
-import com.udacity.asteroidradar.domain.DailyImage
+import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import com.udacity.asteroidradar.network.ImageApi
 import org.json.JSONObject
 import retrofit2.Call

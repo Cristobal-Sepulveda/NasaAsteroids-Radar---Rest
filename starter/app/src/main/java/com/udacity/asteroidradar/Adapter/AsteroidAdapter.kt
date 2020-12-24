@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.api
+package com.udacity.asteroidradar.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.databinding.TextItemViewBinding
-import com.udacity.asteroidradar.domain.Asteroid
-import kotlinx.android.synthetic.main.fragment_main.view.*
+import com.udacity.asteroidradar.network.Asteroid
 
 class AsteroidAdapter: ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffCallBack){
     class AsteroidViewHolder(private var binding: TextItemViewBinding):

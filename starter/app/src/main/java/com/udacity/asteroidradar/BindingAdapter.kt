@@ -22,8 +22,8 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.udacity.asteroidradar.api.AsteroidAdapter
-import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.Adapter.AsteroidAdapter
+import com.udacity.asteroidradar.network.Asteroid
 
 /**
  * When there is no Asteroid data (data is null), hide the [RecyclerView], otherwise show it.
