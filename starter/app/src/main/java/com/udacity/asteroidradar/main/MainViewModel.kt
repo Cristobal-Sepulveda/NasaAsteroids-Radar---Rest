@@ -2,19 +2,9 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.database.DATABASE
 import com.udacity.asteroidradar.database.getDatabase
-import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
-import com.udacity.asteroidradar.network.AsteroidsApi
-import com.udacity.asteroidradar.objects.domainObjects.DailyImage
-import com.udacity.asteroidradar.network.ImageApi
-import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkAsteroid
 import com.udacity.asteroidradar.repository.Repository
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -29,6 +19,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val domainAsteroid = repository.asteroidsFromDatabase
     val domainDailyImage = repository.dailyImageFromDatabase.value?.last()?.url
+
+    /**
+     * Factory for constructing MainViewModel with parameter
+     */
+    class Factory(val app: Application) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(app) as T
+            }
+            throw IllegalArgumentException("Unable to construct viewmodel")
+        }
+    }
+
 
 
 }

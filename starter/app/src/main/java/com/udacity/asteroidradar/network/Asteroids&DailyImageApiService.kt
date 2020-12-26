@@ -39,7 +39,7 @@ object AsteroidsApi{
     }
 }
 
-object ImageApi{
+object DailyImageApi{
     private val retrofitImage = Retrofit.Builder()
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
