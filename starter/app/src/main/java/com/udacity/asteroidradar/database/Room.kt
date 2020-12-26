@@ -47,24 +47,17 @@ interface DailyImageDao{
 abstract class DATABASE: RoomDatabase() {
     abstract val asteroidsDao: AsteroidsDao
     abstract val imageDao: DailyImageDao
+}
 
-    companion object {
-        @Volatile
-        private var INSTANCE: DATABASE? = null
-        fun getDatabase(context: Context): DATABASE {
-            synchronized(this) {
-                var instance = INSTANCE
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                            context.applicationContext,
-                            DATABASE::class.java,
-                            "DATABASE")
-                            .fallbackToDestructiveMigration()
-                            .build()
-                    INSTANCE = instance
-                }
-                return instance
-            }
+private lateinit var INSTANCE: DATABASE
+
+fun getDatabase(context: Context): DATABASE {
+    synchronized(DATABASE::class.java) {
+        if (!::INSTANCE.isInitialized) {
+            INSTANCE = Room.databaseBuilder(context.applicationContext,
+                    DATABASE::class.java,
+                    "database").build()
         }
     }
+    return INSTANCE
 }
