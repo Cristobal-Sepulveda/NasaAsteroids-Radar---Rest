@@ -38,7 +38,7 @@ import com.udacity.asteroidradar.objects.domainObjects.DailyImage
  * }
  */
 @JsonClass(generateAdapter = true)
-data class NetworkDailyImageContainer(val dailyImages: List<NetworkDailyImage>)
+data class NetworkDailyImageContainer(var dailyImages: NetworkDailyImage)
 
 /**
  * Videos represent a devbyte that can be played.

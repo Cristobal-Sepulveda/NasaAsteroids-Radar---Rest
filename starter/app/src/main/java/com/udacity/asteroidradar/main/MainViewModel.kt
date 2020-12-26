@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
-import com.udacity.asteroidradar.network.Asteroid
 import com.udacity.asteroidradar.network.AsteroidsApi
 import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import com.udacity.asteroidradar.network.ImageApi
+import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkAsteroid
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,8 +15,8 @@ import retrofit2.Response
 
 class MainViewModel : ViewModel() {
 
-    private val _response = MutableLiveData<List<Asteroid>>()
-    val response: LiveData<List<Asteroid>>
+    private val _response = MutableLiveData<List<NetworkAsteroid>>()
+    val response: LiveData<List<NetworkAsteroid>>
         get() = _response
 
     private val _error = MutableLiveData<String>()
@@ -43,7 +43,7 @@ class MainViewModel : ViewModel() {
             }
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 val list = parseAsteroidsJsonResult(JSONObject(response.body()!!))
-                _response.value = list.toList()
+                _response.value = list.asteroids
             }
         })
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

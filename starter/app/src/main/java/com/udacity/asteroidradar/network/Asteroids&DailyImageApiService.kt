@@ -5,6 +5,7 @@ import com.udacity.asteroidradar.Constants.ASTEROIDSAPI_KEY
 import com.udacity.asteroidradar.Constants.ASTEROIDSAPI_URL
 import com.udacity.asteroidradar.Constants.IMAGEAPI_KEY
 import com.udacity.asteroidradar.Constants.IMAGEAPI_URL
+import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkDailyImage
 import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -12,37 +13,37 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 
-private val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
-
-private val retrofitAsteroid = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(ASTEROIDSAPI_URL)
-    .build()
-
-private val retrofitImage = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(IMAGEAPI_URL)
-    .build()
-
 interface AsteroidsApiService {
     @GET(ASTEROIDSAPI_KEY)
     fun getAsteroids():
             Call<String>
     @GET(IMAGEAPI_KEY)
-    fun getImage():
-            Call<DailyImage>
+    fun getImage(): NetworkDailyImage
 }
 
+private val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
+
 object AsteroidsApi{
+    private val retrofitAsteroid = Retrofit.Builder()
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .baseUrl(ASTEROIDSAPI_URL)
+        .build()
+
     val retrofitService: AsteroidsApiService by lazy{
         retrofitAsteroid.create(AsteroidsApiService::class.java)
     }
 }
+
 object ImageApi{
+    private val retrofitImage = Retrofit.Builder()
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .baseUrl(IMAGEAPI_URL)
+        .build()
+
     val retrofitService: AsteroidsApiService by lazy{
         retrofitImage.create(AsteroidsApiService::class.java)
     }
