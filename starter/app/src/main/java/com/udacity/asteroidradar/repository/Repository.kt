@@ -7,9 +7,7 @@ import com.udacity.asteroidradar.network.Asteroid
 import com.udacity.asteroidradar.network.AsteroidsApi
 import com.udacity.asteroidradar.network.ImageApi
 import com.udacity.asteroidradar.network.parseAsteroidsJsonResult
-import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkDailyImage
-import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkDailyImageContainer
-import com.udacity.asteroidradar.objects.dataTransferObjects.asDatabaseModel
+import com.udacity.asteroidradar.objects.dataTransferObjects.*
 import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
 import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 lateinit var imageLoadError: NetworkDailyImageContainer
+lateinit var asteroidLoadError: NetworkAsteroidsContainer
 class Repository(private val database: DATABASE) {
 
     val asteroidsFromDatabase:LiveData<List<Asteroid>> =
@@ -31,11 +30,25 @@ class Repository(private val database: DATABASE) {
             }
 
     suspend fun refreshDATABASE(){
-        val listOfAsteroids = AsteroidsApi.retrofitService.getAsteroids()
-        val listOfAdaptedAsteroids = parseAsteroidsJsonResult(JSONObject(listOfAsteroids.toString()))
         withContext(Dispatchers.IO) {
-            database.asteroidsDao.insertAllAsteroids(*listOfAdaptedAsteroids.asDatabaseModel())
-
+            AsteroidsApi.retrofitService.getAsteroids().enqueue(
+                    object: Callback<String>{
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            database.asteroidsDao.insertAllAsteroids(
+                                    *parseAsteroidsJsonResult(JSONObject(response.body()!!)).asDatabaseModel())
+                        }
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            val asteroid = NetworkAsteroid(222,
+                            "${t.message}",
+                            "20-20-20",
+                            12.34,
+                            12.34,
+                            12.34,
+                            12.34,
+                            true)
+                            asteroidLoadError = NetworkAsteroidsContainer(listOf(asteroid))
+                            database.asteroidsDao.insertAllAsteroids(*asteroidLoadError.asDatabaseModel())
+                        })
             ImageApi.retrofitService.getImage().enqueue(
                     object: Callback<NetworkDailyImageContainer>{
                         override fun onResponse(call: Call<NetworkDailyImageContainer>,
