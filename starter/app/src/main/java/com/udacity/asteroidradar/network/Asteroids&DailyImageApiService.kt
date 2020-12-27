@@ -6,8 +6,6 @@ import com.udacity.asteroidradar.Constants.ASTEROIDSAPI_URL
 import com.udacity.asteroidradar.Constants.IMAGEAPI_KEY
 import com.udacity.asteroidradar.Constants.IMAGEAPI_URL
 import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkDailyImage
-import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkDailyImageContainer
-import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -19,7 +17,7 @@ interface AsteroidsApiService {
     fun getAsteroids():
             Call<String>
     @GET(IMAGEAPI_KEY)
-    fun getImage(): Call<NetworkDailyImageContainer>
+    fun getImage(): Call<NetworkDailyImage>
 
 }
 

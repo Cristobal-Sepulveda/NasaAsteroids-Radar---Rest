@@ -37,7 +37,7 @@ import com.udacity.asteroidradar.network.Asteroid
  * }
  */
 @JsonClass(generateAdapter = true)
-data class NetworkAsteroidsContainer(var asteroids: List<NetworkAsteroid>)
+data class NetworkAsteroidsContainer(var asteroids: ArrayList<NetworkAsteroid>)
 
 /**
  * Videos represent a devbyte that can be played.

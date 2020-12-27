@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.database.DATABASE
 import com.udacity.asteroidradar.network.*
 import com.udacity.asteroidradar.objects.dataTransferObjects.*
+import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
 import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
 import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import kotlinx.coroutines.Dispatchers
@@ -18,18 +19,17 @@ class Repository(private val database: DATABASE) {
             Transformations.map(database.asteroidsDao.getAsteroids()){
                 it.asDomainModel()
             }
-    val dailyImageFromDatabase: LiveData<List<DailyImage>> =
-            Transformations.map(database.imageDao.getImage()){
-                it.asDomainModel()
-            }
+    val dailyImageFromDatabase: LiveData<DatabaseDailyImageEntity> = database.dailyImageDao.getImage()
+    val parsed= dailyImageFromDatabase.value?.asDomainModel(dailyImageFromDatabase.value!!)
 
     suspend fun refreshDATABASE(){
+        val dailyImageResponse = DailyImageApi.retrofitService.getImage().await()
+        val asteroidsList = AsteroidsApi.retrofitService.getAsteroids().await()
+        val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
+        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ $dailyImageResponse.url")
         withContext(Dispatchers.IO) {
-            val asteroidsList = AsteroidsApi.retrofitService.getAsteroids().await()
-            val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
             database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
-            val dailyImageResponse = DailyImageApi.retrofitService.getImage().await()
-            database.imageDao.insertImage(*dailyImageResponse.asDatabaseModel())
+            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
         }
     }
 }

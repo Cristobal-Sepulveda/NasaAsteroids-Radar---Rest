@@ -37,9 +37,6 @@ import com.udacity.asteroidradar.objects.domainObjects.DailyImage
  *   "videos": []
  * }
  */
-@JsonClass(generateAdapter = true)
-data class NetworkDailyImageContainer(var dailyImages: List<NetworkDailyImage>)
-
 /**
  * Videos represent a devbyte that can be played.
  */
@@ -56,28 +53,22 @@ data class NetworkDailyImage(
 /**
  * Convert Network results to domain & database objects
  */
-fun NetworkDailyImageContainer.asDomainModel(): List<DailyImage> {
-    return dailyImages.map {
-        DailyImage(
-                date = it.date,
-                explanation = it.explanation,
-                hdurl = it.hdurl,
-                mediaType = it.mediaType,
-                serviceVersion = it.serviceVersion,
-                title = it.title,
-                url = it.url)
-    }
+fun NetworkDailyImage.asDomainModel(networkDailyImage: NetworkDailyImage): DailyImage {
+    return DailyImage(networkDailyImage.date,
+    networkDailyImage.explanation,
+    networkDailyImage.hdurl,
+    networkDailyImage.mediaType,
+    networkDailyImage.serviceVersion,
+    networkDailyImage.title,
+    networkDailyImage.url)
 }
 
-fun NetworkDailyImageContainer.asDatabaseModel(): Array<DatabaseDailyImageEntity> {
-    return dailyImages.map {
-        DatabaseDailyImageEntity(
-            date = it.date,
-            explanation = it.explanation,
-            hdurl = it.hdurl,
-            mediaType = it.mediaType,
-            serviceVersion = it.serviceVersion,
-            title = it.title,
-            url = it.url)
-    }.toTypedArray()
+fun NetworkDailyImage.asDatabaseModel(networkDailyImage: NetworkDailyImage): DatabaseDailyImageEntity {
+    return DatabaseDailyImageEntity(networkDailyImage.date,
+            networkDailyImage.explanation,
+            networkDailyImage.hdurl,
+            networkDailyImage.mediaType,
+            networkDailyImage.serviceVersion,
+            networkDailyImage.title,
+            networkDailyImage.url)
 }

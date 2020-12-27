@@ -35,7 +35,7 @@ interface AsteroidsDao {
 @Dao
 interface DailyImageDao{
     @Query("select * from databasedailyimageentity")
-    fun getImage(): LiveData<List<DatabaseDailyImageEntity>>
+    fun getImage(): LiveData<DatabaseDailyImageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertImage(vararg videos: DatabaseDailyImageEntity)
@@ -46,7 +46,7 @@ interface DailyImageDao{
             exportSchema = false)
 abstract class DATABASE: RoomDatabase() {
     abstract val asteroidsDao: AsteroidsDao
-    abstract val imageDao: DailyImageDao
+    abstract val dailyImageDao: DailyImageDao
 }
 
 private lateinit var INSTANCE: DATABASE

@@ -7,12 +7,10 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-lateinit var asteroidListContainer:NetworkAsteroidsContainer
 fun parseAsteroidsJsonResult(jsonResult: JSONObject): NetworkAsteroidsContainer {
     val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
     println(nearEarthObjectsJson)
     val asteroidList = ArrayList<NetworkAsteroid>()
-
     var x = 0
     val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
     println(nextSevenDaysFormattedDates)
@@ -36,11 +34,11 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): NetworkAsteroidsContainer 
             val asteroid = NetworkAsteroid(id, codename, formattedDate, absoluteMagnitude,
                 estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous)
             asteroidList.add(asteroid)
-            println("$x \n $asteroid \n")
+            //println("$x \n $asteroid \n")
             x++
         }
     }
-    asteroidListContainer.asteroids = asteroidList
+    var asteroidListContainer = NetworkAsteroidsContainer(asteroidList)
     println("${asteroidList.size} asteroid's detected")
     return asteroidListContainer
 }
@@ -51,14 +49,8 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): NetworkAsteroidsContainer 
     for (i in 0..Constants.DEFAULT_END_DATE_DAYS) {
         val currentTime = calendar.time
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-        if(dateFormat.format(currentTime).slice(5..6) == "12" &&
-                dateFormat.format(currentTime).slice(8..9)== "31"){
-            formattedDateList.add(dateFormat.format(currentTime))
-            calendar.add(Calendar.YEAR,1)
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-        }else{
         formattedDateList.add(dateFormat.format(currentTime))
-        calendar.add(Calendar.DAY_OF_YEAR, 1) }
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
     }
     return formattedDateList
 }

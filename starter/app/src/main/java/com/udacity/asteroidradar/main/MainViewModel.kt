@@ -18,7 +18,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val domainAsteroid = repository.asteroidsFromDatabase
-    val domainDailyImage = repository.dailyImageFromDatabase.value?.last()?.url
+    val domainDailyImage = repository.parsed?.url
 
     /**
      * Factory for constructing MainViewModel with parameter

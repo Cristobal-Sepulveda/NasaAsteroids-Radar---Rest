@@ -17,15 +17,12 @@ data class DatabaseDailyImageEntity(
     val url: String)
 
 //Add an extension function which converts from database objects to domain objects:
-fun List<DatabaseDailyImageEntity>.asDomainModel(): List<DailyImage> {
-    return map {
-        DailyImage (
-            date = it.date,
-            explanation = it.explanation,
-            hdurl = it.hdurl,
-            mediaType = it.mediaType,
-            serviceVersion = it.serviceVersion,
-            title = it.title,
-            url = it.url)
-    }
+fun DatabaseDailyImageEntity.asDomainModel(databaseDailyImageEntity: DatabaseDailyImageEntity): DailyImage {
+    return DailyImage(databaseDailyImageEntity.date,
+            databaseDailyImageEntity.explanation,
+            databaseDailyImageEntity.hdurl,
+            databaseDailyImageEntity.mediaType,
+            databaseDailyImageEntity.serviceVersion,
+            databaseDailyImageEntity.title,
+            databaseDailyImageEntity.url)
 }
