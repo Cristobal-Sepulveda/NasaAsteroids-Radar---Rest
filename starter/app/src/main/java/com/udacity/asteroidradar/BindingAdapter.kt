@@ -17,12 +17,15 @@
 
 package com.udacity.asteroidradar
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.Adapter.AsteroidAdapter
+import com.udacity.asteroidradar.main.AsteroidsApiStatus
 import com.udacity.asteroidradar.network.Asteroid
 
 /**
@@ -40,5 +43,19 @@ fun bindImage(imgView: ImageView, imgUrl: String?){
         Glide.with(imgView.context)
             .load(imgUri)
             .into(imgView)
+    }
+}
+@BindingAdapter("asteroidsApiStatus")
+fun bindStatus(progressBar: ProgressBar, status: AsteroidsApiStatus?) {
+    when (status) {
+        AsteroidsApiStatus.LOADING -> {
+            progressBar.visibility = View.VISIBLE
+        }
+        AsteroidsApiStatus.ERROR -> {
+            progressBar.visibility = View.GONE
+        }
+        AsteroidsApiStatus.DONE -> {
+            progressBar.visibility = View.GONE
+        }
     }
 }

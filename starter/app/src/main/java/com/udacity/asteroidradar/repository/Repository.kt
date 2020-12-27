@@ -26,10 +26,10 @@ class Repository(private val database: DATABASE) {
         val dailyImageResponse = DailyImageApi.retrofitService.getImage().await()
         val asteroidsList = AsteroidsApi.retrofitService.getAsteroids().await()
         val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
-        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ $dailyImageResponse.url")
         withContext(Dispatchers.IO) {
             database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
             database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
         }
+
     }
 }

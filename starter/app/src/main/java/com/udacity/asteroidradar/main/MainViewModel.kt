@@ -6,14 +6,20 @@ import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.Repository
 import kotlinx.coroutines.launch
 
+enum class AsteroidsApiStatus{LOADING, ERROR, DONE}
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = getDatabase(application)
     private val repository = Repository(database)
+    private val _status = MutableLiveData<AsteroidsApiStatus>()
+    val status: LiveData<AsteroidsApiStatus>
+        get()= _status
 
     init{
         viewModelScope.launch{
+            _status.value = AsteroidsApiStatus.LOADING
             repository.refreshDATABASE()
+            _status.value = AsteroidsApiStatus.DONE
         }
     }
 
@@ -32,7 +38,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
     }
-
-
-
 }
