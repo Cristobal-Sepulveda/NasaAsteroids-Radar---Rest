@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.databinding.TextItemViewBinding
 import com.udacity.asteroidradar.network.Asteroid
 
-class AsteroidAdapter: ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffCallBack){
+class AsteroidAdapter(private val onClickListener: OnClickListener)
+    : ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffCallBack){
+
     class AsteroidViewHolder(private var binding: TextItemViewBinding):
             RecyclerView.ViewHolder(binding.root) {
         fun bind(asteroid: Asteroid){
@@ -17,8 +19,7 @@ class AsteroidAdapter: ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
         }
-
-            }
+    }
 
     companion object DiffCallBack: DiffUtil.ItemCallback<Asteroid>(){
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
@@ -32,10 +33,16 @@ class AsteroidAdapter: ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
         val asteroid = getItem(position)
+        holder.itemView.setOnClickListener(){
+            onClickListener.onClick(asteroid)
+        }
         holder.bind(asteroid)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidAdapter.AsteroidViewHolder {
         return AsteroidViewHolder(TextItemViewBinding.inflate(LayoutInflater.from(parent.context)))
+    }
+    class OnClickListener(val clickListener: (asteroid: Asteroid) -> Unit) {
+        fun onClick(asteroid: Asteroid) = clickListener(asteroid)
     }
 }

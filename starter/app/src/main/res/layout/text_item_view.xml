@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name ="asteroidItem"
             type ="com.udacity.asteroidradar.network.Asteroid"/>
     </data>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:textSize="24sp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@{asteroidItem.longConverterToString(asteroidItem.id)}"
-                android:textColor="@android:color/white"/>
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-            <TextView
-                android:textSize="24sp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:text="@{asteroidItem.codename}"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/asteroidCodename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{asteroidItem.codename}"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TEXTTEXTTEXT" />
+
+        <TextView
+            android:id="@+id/asteroidDateOfApproach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="@{asteroidItem.closeApproachDate}"
-            android:textColor="@android:color/white"/>
-    </LinearLayout>
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/asteroidCodename"
+            tools:text="TEXTTEXTTEXT" />
+
+        <ImageView
+            android:id="@+id/asteroidIsDangerous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="322dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:statusIcon="@{asteroidItem.component8()}"
+            tools:src="@drawable/ic_status_potentially_hazardous" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

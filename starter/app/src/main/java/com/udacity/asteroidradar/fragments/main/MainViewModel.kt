@@ -1,8 +1,9 @@
-package com.udacity.asteroidradar.main
+package com.udacity.asteroidradar.fragments.main
 
 import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.network.Asteroid
 import com.udacity.asteroidradar.repository.Repository
 import kotlinx.coroutines.launch
 
@@ -11,9 +12,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = getDatabase(application)
     private val repository = Repository(database)
+
     private val _status = MutableLiveData<AsteroidsApiStatus>()
+
     val status: LiveData<AsteroidsApiStatus>
         get()= _status
+
+    private val _navigateToSelectedAsteroid = MutableLiveData<Asteroid>()
+
+    /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
+    val navigateToSelectedAsteroid: LiveData<Asteroid>
+        get() = _navigateToSelectedAsteroid
+
+    fun displayAsteroidDetails(asteroid: Asteroid) {
+        _navigateToSelectedAsteroid.value = asteroid
+    }
+
+    fun displayAsteroidDetailsComplete() {
+        _navigateToSelectedAsteroid.value = null
+    }
+    /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
 
     init{
         viewModelScope.launch{
