@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.network.Asteroid
+import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
 import com.udacity.asteroidradar.repository.Repository
 import kotlinx.coroutines.launch
 
@@ -14,24 +15,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = Repository(database)
 
     private val _status = MutableLiveData<AsteroidsApiStatus>()
-
     val status: LiveData<AsteroidsApiStatus>
         get()= _status
 
     private val _navigateToSelectedAsteroid = MutableLiveData<Asteroid>()
-
-    /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
     val navigateToSelectedAsteroid: LiveData<Asteroid>
         get() = _navigateToSelectedAsteroid
-
-    fun displayAsteroidDetails(asteroid: Asteroid) {
-        _navigateToSelectedAsteroid.value = asteroid
-    }
-
-    fun displayAsteroidDetailsComplete() {
-        _navigateToSelectedAsteroid.value = null
-    }
-    /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
 
     init{
         viewModelScope.launch{
@@ -40,9 +29,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _status.value = AsteroidsApiStatus.DONE
         }
     }
+    var weekAsteroids = repository.asteroidsFromDatabase
+    var domainAsteroidsInScreen = weekAsteroids
+    var domainDailyImage = repository.parsed?.url
+    var todayAsteroids= repository.todayAsteroids
 
-    val domainAsteroid = repository.asteroidsFromDatabase
-    val domainDailyImage = repository.parsed?.url
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
+    /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
+    fun displayAsteroidDetails(asteroid: Asteroid) {
+        _navigateToSelectedAsteroid.value = asteroid
+    }
+
+    fun displayAsteroidDetailsComplete() {
+        _navigateToSelectedAsteroid.value = null
+    }
+    //>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     /**
      * Factory for constructing MainViewModel with parameter

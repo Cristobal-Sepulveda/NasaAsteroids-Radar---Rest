@@ -17,6 +17,7 @@ class DetailFragment : Fragment() {
         val application = requireNotNull(activity).application
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        setHasOptionsMenu(true)
 
         val asteroid = DetailFragmentArgs.fromBundle(requireArguments()).selectedAsteroid
         val viewModelFactory = DetailViewModelFactory(asteroid, application)

@@ -9,11 +9,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 fun parseAsteroidsJsonResult(jsonResult: JSONObject): NetworkAsteroidsContainer {
     val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
-    println(nearEarthObjectsJson)
     val asteroidList = ArrayList<NetworkAsteroid>()
-    var x = 0
     val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
-    println(nextSevenDaysFormattedDates)
     for (formattedDate in nextSevenDaysFormattedDates) {
         val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(formattedDate)
         for (i in 0 until dateAsteroidJsonArray.length()) {
@@ -34,8 +31,6 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): NetworkAsteroidsContainer 
             val asteroid = NetworkAsteroid(id, codename, formattedDate, absoluteMagnitude,
                 estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous)
             asteroidList.add(asteroid)
-            //println("$x \n $asteroid \n")
-            x++
         }
     }
     var asteroidListContainer = NetworkAsteroidsContainer(asteroidList)

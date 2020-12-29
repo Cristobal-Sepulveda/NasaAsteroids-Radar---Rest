@@ -44,7 +44,7 @@ import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 data class NetworkDailyImage(
     val date: String,
     val explanation: String,
-    val hdurl: String,
+/*    val hdurl: String,*/
     @Json(name = "media_type") val mediaType: String,
     @Json(name = "service_version")val serviceVersion: String,
     val title: String,
@@ -56,7 +56,7 @@ data class NetworkDailyImage(
 fun NetworkDailyImage.asDomainModel(networkDailyImage: NetworkDailyImage): DailyImage {
     return DailyImage(networkDailyImage.date,
     networkDailyImage.explanation,
-    networkDailyImage.hdurl,
+    /*networkDailyImage.hdurl,*/
     networkDailyImage.mediaType,
     networkDailyImage.serviceVersion,
     networkDailyImage.title,
@@ -66,7 +66,7 @@ fun NetworkDailyImage.asDomainModel(networkDailyImage: NetworkDailyImage): Daily
 fun NetworkDailyImage.asDatabaseModel(networkDailyImage: NetworkDailyImage): DatabaseDailyImageEntity {
     return DatabaseDailyImageEntity(networkDailyImage.date,
             networkDailyImage.explanation,
-            networkDailyImage.hdurl,
+            /*networkDailyImage.hdurl,*/
             networkDailyImage.mediaType,
             networkDailyImage.serviceVersion,
             networkDailyImage.title,

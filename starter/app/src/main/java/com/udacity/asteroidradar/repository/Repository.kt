@@ -3,11 +3,11 @@ package com.udacity.asteroidradar.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.database.DATABASE
+import com.udacity.asteroidradar.database.todayAsteroids
 import com.udacity.asteroidradar.network.*
 import com.udacity.asteroidradar.objects.dataTransferObjects.*
 import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
 import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
-import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -22,13 +22,26 @@ class Repository(private val database: DATABASE) {
     val dailyImageFromDatabase: LiveData<DatabaseDailyImageEntity> = database.dailyImageDao.getImage()
     val parsed= dailyImageFromDatabase.value?.asDomainModel(dailyImageFromDatabase.value!!)
 
+    var todayAsteroids= Transformations.map(database.asteroidsDao.todayAsteroids()){
+        it.asDomainModel()
+    }
+
     suspend fun refreshDATABASE(){
         val dailyImageResponse = DailyImageApi.retrofitService.getImage().await()
-        val asteroidsList = AsteroidsApi.retrofitService.getAsteroids().await()
+
+        val asteroidsList = AsteroidsApi.retrofitService.getAsteroids(
+                getNextSevenDaysFormattedDates().first(),
+                getNextSevenDaysFormattedDates().last(),
+        "lao4UxePXSg8NRWBiVOgmvOW2LQ7tl6MWArILLuP").await()
         val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
+
         withContext(Dispatchers.IO) {
+            try{
             database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
             database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
+        }catch(e: Exception){
+            return@withContext
+        }
         }
 
     }

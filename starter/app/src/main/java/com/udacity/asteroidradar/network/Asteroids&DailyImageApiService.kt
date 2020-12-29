@@ -1,7 +1,6 @@
 package com.udacity.asteroidradar.network
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.udacity.asteroidradar.Constants.ASTEROIDSAPI_KEY
 import com.udacity.asteroidradar.Constants.ASTEROIDSAPI_URL
 import com.udacity.asteroidradar.Constants.IMAGEAPI_KEY
 import com.udacity.asteroidradar.Constants.IMAGEAPI_URL
@@ -11,11 +10,19 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface AsteroidsApiService {
-    @GET(ASTEROIDSAPI_KEY)
-    fun getAsteroids():
-            Call<String>
+    @GET("neo/rest/v1/feed")
+    fun getAsteroids(
+            @Query("start_date") startDate: String,
+            @Query("end_date") endDate: String,
+            @Query("api_key") apiKey: String
+    ): Call<String>
+
+/*    @GET(ASTEROIDSAPI_KEY)
+    fun getAsteroids():Call<String>*/
+
     @GET(IMAGEAPI_KEY)
     fun getImage(): Call<NetworkDailyImage>
 
@@ -28,7 +35,6 @@ private val moshi = Moshi.Builder()
 object AsteroidsApi{
     private val retrofitAsteroid = Retrofit.Builder()
         .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .baseUrl(ASTEROIDSAPI_URL)
         .build()
 
@@ -39,7 +45,6 @@ object AsteroidsApi{
 
 object DailyImageApi{
     private val retrofitImage = Retrofit.Builder()
-        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .baseUrl(IMAGEAPI_URL)
         .build()
