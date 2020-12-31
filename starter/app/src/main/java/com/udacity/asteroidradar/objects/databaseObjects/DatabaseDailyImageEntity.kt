@@ -10,7 +10,7 @@ data class DatabaseDailyImageEntity(
     @PrimaryKey
     val date: String,
     val explanation: String,
-    /*val hdurl: String,*/
+    val hdurl: String,
     @Json(name = "media_type") val mediaType: String,
     @Json(name = "service_version")val serviceVersion: String,
     val title: String,
@@ -20,7 +20,7 @@ data class DatabaseDailyImageEntity(
 fun DatabaseDailyImageEntity.asDomainModel(databaseDailyImageEntity: DatabaseDailyImageEntity): DailyImage {
     return DailyImage(databaseDailyImageEntity.date,
             databaseDailyImageEntity.explanation,
-            /*databaseDailyImageEntity.hdurl,*/
+            databaseDailyImageEntity.hdurl,
             databaseDailyImageEntity.mediaType,
             databaseDailyImageEntity.serviceVersion,
             databaseDailyImageEntity.title,

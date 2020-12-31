@@ -22,17 +22,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToSelectedAsteroid: LiveData<Asteroid>
         get() = _navigateToSelectedAsteroid
 
+    var weekAsteroids = repository.asteroidsFromDatabase
+    var todayAsteroids= repository.todayAsteroids
+
+    var domainDailyImageUrl = repository.parsed?.url
+    var domainDailyImageExplanation = repository.parsed?.explanation
+    private val _domainAsteroidsInScreen = MutableLiveData<LiveData<List<Asteroid>>>()
+    val domainAsteroidsInScreen: LiveData<LiveData<List<Asteroid>>>
+        get()= _domainAsteroidsInScreen
+
+
+
     init{
         viewModelScope.launch{
             _status.value = AsteroidsApiStatus.LOADING
             repository.refreshDATABASE()
             _status.value = AsteroidsApiStatus.DONE
+        println("${repository.dailyImageFromDatabase.value?.url} holaaa")
         }
+        _domainAsteroidsInScreen.value = weekAsteroids
     }
-    var weekAsteroids = repository.asteroidsFromDatabase
-    var domainAsteroidsInScreen = weekAsteroids
-    var domainDailyImage = repository.parsed?.url
-    var todayAsteroids= repository.todayAsteroids
+
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
     /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/

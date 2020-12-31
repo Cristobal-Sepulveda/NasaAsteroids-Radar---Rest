@@ -28,9 +28,8 @@ class Repository(private val database: DATABASE) {
 
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
-            val dailyImageResponse = DailyImageApi.retrofitService.getImage().await()
-
-            val asteroidsList = AsteroidsApi.retrofitService.getAsteroids(
+            val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+            val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),
                     "lao4UxePXSg8NRWBiVOgmvOW2LQ7tl6MWArILLuP").await()

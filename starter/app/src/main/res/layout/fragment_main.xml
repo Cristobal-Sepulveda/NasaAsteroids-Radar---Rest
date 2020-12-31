@@ -11,8 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/app_background">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/activity_main_image_of_the_day_layout"
@@ -27,25 +26,26 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:contentDescription="@{viewModel.domainDailyImageExplanation}"
                 app:srcCompat="@drawable/placeholder_picture_of_day"
-                app:imageUrl="@{viewModel.domainDailyImage}"/>
+                app:imageUrl="@{viewModel.domainDailyImageUrl}"/>
+
             <TextView
                 android:id="@+id/textView"
+                android:background="@color/primaryColor"
+                style="@style/TextAppearance.TextViewTitle"
+                android:padding="16dp"
+                android:text="@string/image_of_the_day"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_gravity="bottom"
-                android:background="#55010613"
-                android:text="@string/image_of_the_day" />
+                android:layout_gravity="bottom"/>
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/asteroid_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/primaryDarkColor"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -10,15 +10,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:contentDescription="@string/asteroid">
 
         <TextView
             android:id="@+id/asteroidCodename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            style="@style/TextAppearance.TextViewTitle"
             android:text="@{asteroidItem.codename}"
-            android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="TEXTTEXTTEXT" />
@@ -28,8 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            style="@style/TextAppearance.TextViewSubtitle"
             android:text="@{asteroidItem.closeApproachDate}"
-            android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/asteroidCodename"
             tools:text="TEXTTEXTTEXT" />

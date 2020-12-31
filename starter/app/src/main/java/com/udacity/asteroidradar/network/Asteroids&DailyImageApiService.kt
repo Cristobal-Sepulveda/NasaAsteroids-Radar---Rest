@@ -12,7 +12,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface AsteroidsApiService {
+interface AppApiService {
     @GET("neo/rest/v1/feed")
     fun getAsteroids(
             @Query("start_date") startDate: String,
@@ -20,11 +20,8 @@ interface AsteroidsApiService {
             @Query("api_key") apiKey: String
     ): Call<String>
 
-/*    @GET(ASTEROIDSAPI_KEY)
-    fun getAsteroids():Call<String>*/
-
     @GET(IMAGEAPI_KEY)
-    fun getImage(): Call<NetworkDailyImage>
+    fun getImage(): Call<List<NetworkDailyImage>>
 
 }
 
@@ -34,22 +31,22 @@ private val moshi = Moshi.Builder()
 
 object AsteroidsApi{
     private val retrofitAsteroid = Retrofit.Builder()
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .baseUrl(ASTEROIDSAPI_URL)
-        .build()
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .baseUrl(ASTEROIDSAPI_URL)
+            .build()
 
-    val retrofitService: AsteroidsApiService by lazy{
-        retrofitAsteroid.create(AsteroidsApiService::class.java)
+    val RETROFIT_SERVICEASTEROID: AppApiService by lazy{
+        retrofitAsteroid.create(AppApiService::class.java)
     }
 }
 
 object DailyImageApi{
     private val retrofitImage = Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .baseUrl(IMAGEAPI_URL)
-        .build()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl(IMAGEAPI_URL)
+            .build()
 
-    val retrofitService: AsteroidsApiService by lazy{
-        retrofitImage.create(AsteroidsApiService::class.java)
+    val RETROFIT_SERVICEDAILYIMAGE: AppApiService by lazy{
+        retrofitImage.create(AppApiService::class.java)
     }
 }
