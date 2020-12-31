@@ -27,22 +27,17 @@ class Repository(private val database: DATABASE) {
     }
 
     suspend fun refreshDATABASE(){
-        val dailyImageResponse = DailyImageApi.retrofitService.getImage().await()
-
-        val asteroidsList = AsteroidsApi.retrofitService.getAsteroids(
-                getNextSevenDaysFormattedDates().first(),
-                getNextSevenDaysFormattedDates().last(),
-        "lao4UxePXSg8NRWBiVOgmvOW2LQ7tl6MWArILLuP").await()
-        val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
-
         withContext(Dispatchers.IO) {
-            try{
-            database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
-            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
-        }catch(e: Exception){
-            return@withContext
-        }
-        }
+            val dailyImageResponse = DailyImageApi.retrofitService.getImage().await()
 
+            val asteroidsList = AsteroidsApi.retrofitService.getAsteroids(
+                    getNextSevenDaysFormattedDates().first(),
+                    getNextSevenDaysFormattedDates().last(),
+                    "lao4UxePXSg8NRWBiVOgmvOW2LQ7tl6MWArILLuP").await()
+            val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
+            database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
+            database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
+            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
+        }
     }
 }

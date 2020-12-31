@@ -32,8 +32,8 @@ interface AsteroidsDao {
     @Query("select * from databaseasteroidentity where closeApproachDate = (:today)")
     fun getAsteroidsFromToday(today: String): LiveData<List<DatabaseAsteroidEntity>>
 
-    @Query("delete from databaseasteroidentity where closeApproachDate !=(:)")
-    fun deleteOldsAsteroids(days: List<String>)
+    @Query("delete from databaseasteroidentity where closeApproachDate <(:days)")
+    fun deleteOldsAsteroids(days: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllAsteroids(vararg videos: DatabaseAsteroidEntity)
