@@ -29,15 +29,6 @@ import com.udacity.asteroidradar.objects.domainObjects.DailyImage
  */
 
 /**
- * VideoHolder holds a list of Videos.
- *
- * This is to parse first level of our network result which looks like
- *
- * {
- *   "videos": []
- * }
- */
-/**
  * Videos represent a devbyte that can be played.
  */
 @JsonClass(generateAdapter = true)
@@ -53,22 +44,26 @@ data class NetworkDailyImage(
 /**
  * Convert Network results to domain & database objects
  */
-fun NetworkDailyImage.asDomainModel(networkDailyImage: NetworkDailyImage): List<DailyImage> {
-    return DailyImage(networkDailyImage.date,
-    networkDailyImage.explanation,
-    networkDailyImage.hdurl,
-    networkDailyImage.mediaType,
-    networkDailyImage.serviceVersion,
-    networkDailyImage.title,
-    networkDailyImage.url)
-}
+fun NetworkDailyImage.asDomainModel(networkDailyImage: NetworkDailyImage): DailyImage {
+    return DailyImage(
+            date = networkDailyImage.date,
+            explanation = networkDailyImage.explanation,
+            hdurl = networkDailyImage.hdurl,
+            mediaType = networkDailyImage.mediaType,
+            serviceVersion = networkDailyImage.serviceVersion,
+            title = networkDailyImage.title,
+            url = networkDailyImage.url
+        )
+    }
 
 fun NetworkDailyImage.asDatabaseModel(networkDailyImage: NetworkDailyImage): DatabaseDailyImageEntity {
-    return DatabaseDailyImageEntity(networkDailyImage.date,
-            networkDailyImage.explanation,
-            networkDailyImage.hdurl,
-            networkDailyImage.mediaType,
-            networkDailyImage.serviceVersion,
-            networkDailyImage.title,
-            networkDailyImage.url)
+    return DatabaseDailyImageEntity(
+        date = networkDailyImage.date,
+        explanation = networkDailyImage.explanation,
+        hdurl = networkDailyImage.hdurl,
+        mediaType = networkDailyImage.mediaType,
+        serviceVersion = networkDailyImage.serviceVersion,
+        title = networkDailyImage.title,
+        url = networkDailyImage.url
+    )
 }

@@ -6,7 +6,10 @@ import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.network.Asteroid
 import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
 import com.udacity.asteroidradar.repository.Repository
+import com.udacity.asteroidradar.utils.getNextSevenDaysFormattedDates
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 enum class AsteroidsApiStatus{LOADING, ERROR, DONE}
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -25,24 +28,34 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var weekAsteroids = repository.asteroidsFromDatabase
     var todayAsteroids= repository.todayAsteroids
 
-    var domainDailyImageUrl = repository.parsed?.url
-    var domainDailyImageExplanation = repository.parsed?.explanation
+    var domainDailyImageUrl = repository.dailyImageFromDatabase.value?.last()?.url
+    var domainDailyImageExplanation = repository.dailyImageFromDatabase.value?.last()?.explanation
+
     private val _domainAsteroidsInScreen = MutableLiveData<LiveData<List<Asteroid>>>()
     val domainAsteroidsInScreen: LiveData<LiveData<List<Asteroid>>>
         get()= _domainAsteroidsInScreen
 
-
-
-    init{
-        viewModelScope.launch{
+    init {
+        viewModelScope.launch {
             _status.value = AsteroidsApiStatus.LOADING
-            repository.refreshDATABASE()
+            drawingTheApp()
             _status.value = AsteroidsApiStatus.DONE
-        println("${repository.dailyImageFromDatabase.value?.url} holaaa")
+            _domainAsteroidsInScreen.value = weekAsteroids
         }
-        _domainAsteroidsInScreen.value = weekAsteroids
     }
 
+
+    suspend fun drawingTheApp (){
+        withContext(Dispatchers.IO) {
+            if (database.asteroidsDao.getAsteroids().value?.first() != null &&
+                database.asteroidsDao.getAsteroids().value?.first()?.closeApproachDate ==
+                getNextSevenDaysFormattedDates().first()) {
+            } else {
+                repository.refreshDATABASE()
+                database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
+            }
+        }
+    }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
     /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/

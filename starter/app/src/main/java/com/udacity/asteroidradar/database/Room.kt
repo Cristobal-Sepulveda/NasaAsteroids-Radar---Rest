@@ -20,10 +20,9 @@ package com.udacity.asteroidradar.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.udacity.asteroidradar.network.getNextSevenDaysFormattedDates
 import com.udacity.asteroidradar.objects.databaseObjects.DatabaseAsteroidEntity
 import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
-import java.util.*
+import com.udacity.asteroidradar.utils.getNextSevenDaysFormattedDates
 @Dao
 interface AsteroidsDao {
     @Query("select * from databaseasteroidentity order by closeApproachDate ASC")
@@ -36,7 +35,7 @@ interface AsteroidsDao {
     fun deleteOldsAsteroids(days: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllAsteroids(vararg videos: DatabaseAsteroidEntity)
+    fun insertAllAsteroids(vararg asteroid: DatabaseAsteroidEntity)
 }
 
 fun AsteroidsDao.todayAsteroids():LiveData<List<DatabaseAsteroidEntity>>{
@@ -44,15 +43,13 @@ fun AsteroidsDao.todayAsteroids():LiveData<List<DatabaseAsteroidEntity>>{
     return getAsteroidsFromToday(today)
 }
 
-
-
 @Dao
 interface DailyImageDao{
     @Query("select * from databasedailyimageentity")
-    fun getImage(): LiveData<DatabaseDailyImageEntity>
+    fun getImage(): LiveData<List<DatabaseDailyImageEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertImage(vararg videos: DatabaseDailyImageEntity)
+    fun insertImage(vararg image: DatabaseDailyImageEntity)
 }
 
 @Database(entities = [DatabaseAsteroidEntity::class, DatabaseDailyImageEntity::class],

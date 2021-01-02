@@ -6,8 +6,12 @@ import com.udacity.asteroidradar.database.DATABASE
 import com.udacity.asteroidradar.database.todayAsteroids
 import com.udacity.asteroidradar.network.*
 import com.udacity.asteroidradar.objects.dataTransferObjects.*
-import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
 import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
+import com.udacity.asteroidradar.objects.domainObjects.DailyImage
+import com.udacity.asteroidradar.utils.AsteroidsApi
+import com.udacity.asteroidradar.utils.DailyImageApi
+import com.udacity.asteroidradar.utils.getNextSevenDaysFormattedDates
+import com.udacity.asteroidradar.utils.parseAsteroidsJsonResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -19,24 +23,31 @@ class Repository(private val database: DATABASE) {
             Transformations.map(database.asteroidsDao.getAsteroids()){
                 it.asDomainModel()
             }
-    val dailyImageFromDatabase: LiveData<DatabaseDailyImageEntity> = database.dailyImageDao.getImage()
-    val parsed= dailyImageFromDatabase.value?.asDomainModel(dailyImageFromDatabase.value!!)
-
     var todayAsteroids= Transformations.map(database.asteroidsDao.todayAsteroids()){
         it.asDomainModel()
     }
 
+    val dailyImageFromDatabase: LiveData<List<DailyImage>> =
+        Transformations.map(database.dailyImageDao.getImage()){
+        it.asDomainModel()
+    }
+
+
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
             val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+            println("${dailyImageResponse.explanation} \n ${dailyImageResponse.date} desde net")
+
             val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),
                     "lao4UxePXSg8NRWBiVOgmvOW2LQ7tl6MWArILLuP").await()
             val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
+
             database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
             database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
             database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
+            println("${database.dailyImageDao.getImage().value?.last()?.explanation} +desde la DB")
         }
     }
 }

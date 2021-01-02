@@ -1,4 +1,5 @@
-package com.udacity.asteroidradar.network
+package com.udacity.asteroidradar.utils
+
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Constants.ASTEROIDSAPI_URL
@@ -21,7 +22,7 @@ interface AppApiService {
     ): Call<String>
 
     @GET(IMAGEAPI_KEY)
-    fun getImage(): Call<List<NetworkDailyImage>>
+    fun getImage(): Call<NetworkDailyImage>
 
 }
 
