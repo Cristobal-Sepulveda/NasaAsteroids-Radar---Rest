@@ -31,31 +31,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var domainDailyImageUrl = repository.dailyImageFromDatabase.value?.url
     var domainDailyImageExplanation = repository.dailyImageFromDatabase.value?.explanation
 
-    private val _domainAsteroidsInScreen = MutableLiveData<LiveData<List<Asteroid>>>()
+/*    private val _domainAsteroidsInScreen = MutableLiveData<LiveData<List<Asteroid>>>()
     val domainAsteroidsInScreen: LiveData<LiveData<List<Asteroid>>>
-        get()= _domainAsteroidsInScreen
+        get()= _domainAsteroidsInScreen*/
 
     init {
         viewModelScope.launch {
             _status.value = AsteroidsApiStatus.LOADING
-            drawingTheApp()
+            repository.refreshDATABASE()
             _status.value = AsteroidsApiStatus.DONE
-            _domainAsteroidsInScreen.value = weekAsteroids
         }
     }
-
-
-    suspend fun drawingTheApp (){
-        withContext(Dispatchers.IO) {
-            if (database.asteroidsDao.getAsteroids().value?.first() != null &&
-                database.asteroidsDao.getAsteroids().value?.first()?.closeApproachDate ==
-                getNextSevenDaysFormattedDates().first()) {
-            } else {
-                repository.refreshDATABASE()
-                database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-            }
-        }
-    }
+    var domainAsteroidsInScreen: LiveData<List<Asteroid>> = weekAsteroids
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
     /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
