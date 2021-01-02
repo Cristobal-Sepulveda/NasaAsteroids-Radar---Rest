@@ -27,16 +27,12 @@ class Repository(private val database: DATABASE) {
         it.asDomainModel()
     }
 
-    val dailyImageFromDatabase: LiveData<List<DailyImage>> =
-        Transformations.map(database.dailyImageDao.getImage()){
-        it.asDomainModel()
-    }
+    val dailyImageFromDatabase= database.dailyImageDao.getImage()
 
 
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
             val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
-            println("${dailyImageResponse.explanation} \n ${dailyImageResponse.date} desde net")
 
             val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
@@ -46,8 +42,10 @@ class Repository(private val database: DATABASE) {
 
             database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
             database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
-            println("${database.dailyImageDao.getImage().value?.last()?.explanation} +desde la DB")
+            val a = dailyImageResponse.asDatabaseModel(dailyImageResponse)
+            println("${a.explanation} prueba del metodo")
+            database.dailyImageDao.insertImage(a)
+            println("${database.dailyImageDao.getImage().value?.date} obtenida de la db")
         }
     }
 }

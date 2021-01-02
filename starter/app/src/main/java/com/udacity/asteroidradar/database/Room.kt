@@ -46,7 +46,7 @@ fun AsteroidsDao.todayAsteroids():LiveData<List<DatabaseAsteroidEntity>>{
 @Dao
 interface DailyImageDao{
     @Query("select * from databasedailyimageentity")
-    fun getImage(): LiveData<List<DatabaseDailyImageEntity>>
+    fun getImage(): LiveData<DatabaseDailyImageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertImage(vararg image: DatabaseDailyImageEntity)

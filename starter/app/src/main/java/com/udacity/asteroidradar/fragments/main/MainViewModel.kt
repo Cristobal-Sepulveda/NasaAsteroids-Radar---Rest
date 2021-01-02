@@ -28,8 +28,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var weekAsteroids = repository.asteroidsFromDatabase
     var todayAsteroids= repository.todayAsteroids
 
-    var domainDailyImageUrl = repository.dailyImageFromDatabase.value?.last()?.url
-    var domainDailyImageExplanation = repository.dailyImageFromDatabase.value?.last()?.explanation
+    var domainDailyImageUrl = repository.dailyImageFromDatabase.value?.url
+    var domainDailyImageExplanation = repository.dailyImageFromDatabase.value?.explanation
 
     private val _domainAsteroidsInScreen = MutableLiveData<LiveData<List<Asteroid>>>()
     val domainAsteroidsInScreen: LiveData<LiveData<List<Asteroid>>>
