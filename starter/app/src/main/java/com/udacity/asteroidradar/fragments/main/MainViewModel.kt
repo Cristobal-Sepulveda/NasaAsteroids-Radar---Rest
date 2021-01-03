@@ -11,11 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-enum class AsteroidsApiStatus{LOADING, ERROR, DONE}
+
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
+    enum class AsteroidsApiStatus{LOADING, ERROR, DONE}
     private val database = getDatabase(application)
     private val repository = Repository(database)
+    var weekAsteroids = repository.asteroidsFromDatabase
+    var todayAsteroids= repository.todayAsteroids
+    var domainDailyImageFromDatabase = repository.dailyImageFromDatabase
 
     private val _status = MutableLiveData<AsteroidsApiStatus>()
     val status: LiveData<AsteroidsApiStatus>
@@ -25,16 +29,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToSelectedAsteroid: LiveData<Asteroid>
         get() = _navigateToSelectedAsteroid
 
-    var weekAsteroids = repository.asteroidsFromDatabase
-    var todayAsteroids= repository.todayAsteroids
-
-    var domainDailyImageUrl = repository.dailyImageFromDatabase.value?.url
-    var domainDailyImageExplanation = repository.dailyImageFromDatabase.value?.explanation
-
-/*    private val _domainAsteroidsInScreen = MutableLiveData<LiveData<List<Asteroid>>>()
-    val domainAsteroidsInScreen: LiveData<LiveData<List<Asteroid>>>
-        get()= _domainAsteroidsInScreen*/
-
     init {
         viewModelScope.launch {
             _status.value = AsteroidsApiStatus.LOADING
@@ -42,7 +36,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _status.value = AsteroidsApiStatus.DONE
         }
     }
-    var domainAsteroidsInScreen: LiveData<List<Asteroid>> = weekAsteroids
+    var domainAsteroidsInScreen: MutableLiveData<List<Asteroid>> = weekAsteroids as MutableLiveData<List<Asteroid>>
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
     /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/

@@ -32,20 +32,21 @@ class Repository(private val database: DATABASE) {
 
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
-            val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+            try{
+                val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+                database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
 
-            val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
+                val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),
                     "lao4UxePXSg8NRWBiVOgmvOW2LQ7tl6MWArILLuP").await()
-            val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
 
-            database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
-            database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-            val a = dailyImageResponse.asDatabaseModel(dailyImageResponse)
-            println("${a.explanation} prueba del metodo")
-            database.dailyImageDao.insertImage(a)
-            println("${database.dailyImageDao.getImage().value?.date} obtenida de la db")
+                val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
+                database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
+                database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
+            }catch(e: Exception){
+                
+            }
         }
     }
 }

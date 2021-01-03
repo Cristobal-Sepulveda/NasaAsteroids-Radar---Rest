@@ -51,11 +51,18 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.show_today_asteroids ->viewModel.domainAsteroidsInScreen = viewModel.todayAsteroids
-            R.id.show_week_asteroids -> viewModel.domainAsteroidsInScreen = viewModel.weekAsteroids
+        when (item.itemId) {
+            R.id.show_today_asteroids -> {
+                viewModel.todayAsteroids.observe(viewLifecycleOwner, Observer {
+                    viewModel.domainAsteroidsInScreen.value = it
+                })
+            }
+            R.id.show_week_asteroids -> {
+                viewModel.weekAsteroids.observe(viewLifecycleOwner, Observer {
+                    viewModel.domainAsteroidsInScreen.value = it
+                })
+            }
         }
-
         return true
     }
 }

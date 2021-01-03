@@ -15,7 +15,7 @@
  *
  */
 
-package com.udacity.asteroidradar
+package com.udacity.asteroidradar.utils
 
 import android.view.View
 import android.widget.ImageView
@@ -23,11 +23,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.Adapter.AsteroidAdapter
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.fragments.main.AsteroidsApiStatus
 import com.udacity.asteroidradar.network.Asteroid
+import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
 
 /**
  * When there is no Asteroid data (data is null), hide the [RecyclerView], otherwise show it.
@@ -37,15 +40,17 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as AsteroidAdapter
     adapter.submitList(data)
 }
+
 @BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String?){
+fun bindImage(imgView: ImageView, imgUrl: LiveData<DatabaseDailyImageEntity>?){
     imgUrl?.let {
-        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        val imgUri = imgUrl.value?.url?.toUri()?.buildUpon()?.scheme("https")?.build()
         Glide.with(imgView.context)
             .load(imgUri)
             .into(imgView)
     }
 }
+
 @BindingAdapter("asteroidsApiStatus")
 fun bindStatus(progressBar: ProgressBar, status: AsteroidsApiStatus?) {
     when (status) {
@@ -60,6 +65,7 @@ fun bindStatus(progressBar: ProgressBar, status: AsteroidsApiStatus?) {
         }
     }
 }
+
 @BindingAdapter("asteroidStatusImage")
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
@@ -68,6 +74,7 @@ fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
         imageView.setImageResource(R.drawable.asteroid_safe)
     }
 }
+
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
