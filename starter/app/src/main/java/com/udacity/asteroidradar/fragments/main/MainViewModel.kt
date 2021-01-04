@@ -11,13 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
+enum class AsteroidsApiStatus{LOADING, ERROR, DONE}
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    enum class AsteroidsApiStatus{LOADING, ERROR, DONE}
     private val database = getDatabase(application)
     private val repository = Repository(database)
-    var weekAsteroids = repository.asteroidsFromDatabase
     var todayAsteroids= repository.todayAsteroids
     var domainDailyImageFromDatabase = repository.dailyImageFromDatabase
 
@@ -32,10 +30,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         viewModelScope.launch {
             _status.value = AsteroidsApiStatus.LOADING
-            repository.refreshDATABASE()
-            _status.value = AsteroidsApiStatus.DONE
+            try {
+                repository.refreshDATABASE()
+                _status.value = AsteroidsApiStatus.DONE
+            }catch(e:Exception){
+                _status.value = AsteroidsApiStatus.ERROR
+            }
         }
     }
+    var weekAsteroids = repository.asteroidsFromDatabase
     var domainAsteroidsInScreen: MutableLiveData<List<Asteroid>> = weekAsteroids as MutableLiveData<List<Asteroid>>
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>

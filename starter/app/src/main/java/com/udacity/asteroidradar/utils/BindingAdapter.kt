@@ -21,6 +21,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -100,4 +101,12 @@ fun bindTextViewToKmUnit(textView: TextView, number: Double) {
 fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     val context = textView.context
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
+}
+@BindingAdapter("isHazardous")
+fun bindIsDangerous(imageView: ImageView, isHazardous: Boolean){
+    if(isHazardous){
+        imageView.contentDescription = "This asteroid is Hazardous"
+    }else{
+        imageView.contentDescription = "this asteroid is not Hazardous"
+    }
 }

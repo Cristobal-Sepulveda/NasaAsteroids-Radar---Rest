@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.database.DATABASE
 import com.udacity.asteroidradar.database.todayAsteroids
 import com.udacity.asteroidradar.network.*
@@ -32,21 +33,17 @@ class Repository(private val database: DATABASE) {
 
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
-            try{
                 val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
                 database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
 
                 val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),
-                    "lao4UxePXSg8NRWBiVOgmvOW2LQ7tl6MWArILLuP").await()
-
+                    Constants.ASTEROIDSAPI_KEY).await()
                 val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
                 database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
                 database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-            }catch(e: Exception){
-                
+
             }
         }
     }
-}
