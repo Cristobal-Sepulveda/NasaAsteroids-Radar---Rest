@@ -13,18 +13,3 @@ class DetailViewModel(asteroid: Asteroid, app: Application): AndroidViewModel(ap
         _selectedAsteroid.value = asteroid
     }
 }
-
-/**
- * Simple ViewModel factory that provides the Asteroid and context to the ViewModel.
- */
-class DetailViewModelFactory(
-        private val asteroid:Asteroid,
-        private val application: Application) : ViewModelProvider.Factory {
-    @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
-            return DetailViewModel(asteroid, application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

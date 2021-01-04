@@ -66,6 +66,20 @@ fun bindStatus(progressBar: ProgressBar, status: AsteroidsApiStatus?) {
         }
     }
 }
+@BindingAdapter("asteroidApiStatusError")
+fun bindStatusError(imageView: ImageView, status: AsteroidsApiStatus?) {
+    when (status) {
+        AsteroidsApiStatus.LOADING -> {
+            imageView.visibility = View.GONE
+        }
+        AsteroidsApiStatus.ERROR -> {
+            imageView.visibility = View.VISIBLE
+        }
+        AsteroidsApiStatus.DONE -> {
+            imageView.visibility = View.GONE
+        }
+    }
+}
 
 @BindingAdapter("asteroidStatusImage")
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {

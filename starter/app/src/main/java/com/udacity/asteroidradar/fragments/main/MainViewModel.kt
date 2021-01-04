@@ -17,6 +17,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDatabase(application)
     private val repository = Repository(database)
     var todayAsteroids= repository.todayAsteroids
+    var weekAsteroids = repository.asteroidsFromDatabase
     var domainDailyImageFromDatabase = repository.dailyImageFromDatabase
 
     private val _status = MutableLiveData<AsteroidsApiStatus>()
@@ -34,12 +35,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 repository.refreshDATABASE()
                 _status.value = AsteroidsApiStatus.DONE
             }catch(e:Exception){
-                _status.value = AsteroidsApiStatus.ERROR
+                if(todayAsteroids.value == null){
+                    _status.value = AsteroidsApiStatus.ERROR
+                }else{
+                    _status.value = AsteroidsApiStatus.DONE
+                }
             }
         }
     }
-    var weekAsteroids = repository.asteroidsFromDatabase
-    var domainAsteroidsInScreen: MutableLiveData<List<Asteroid>> = weekAsteroids as MutableLiveData<List<Asteroid>>
+    var domainAsteroidsInScreen: MutableLiveData<List<Asteroid>> =
+            repository.asteroidsFromDatabase as MutableLiveData<List<Asteroid>>
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
     /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
@@ -52,16 +57,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
     //>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    /**
-     * Factory for constructing MainViewModel with parameter
-     */
-    class Factory(val app: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return MainViewModel(app) as T
-            }
-            throw IllegalArgumentException("Unable to construct viewmodel")
-        }
-    }
 }

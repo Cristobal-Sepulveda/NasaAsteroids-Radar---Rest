@@ -33,17 +33,17 @@ class Repository(private val database: DATABASE) {
 
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
-                val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
-                database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
+            val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
 
-                val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
+            val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),
                     Constants.ASTEROIDSAPI_KEY).await()
-                val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
-                database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
-                database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
+            val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
+            database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
+            database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
 
-            }
         }
     }
+}
