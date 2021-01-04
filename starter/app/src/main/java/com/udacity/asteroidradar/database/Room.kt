@@ -48,9 +48,13 @@ interface DailyImageDao{
     @Query("select * from databasedailyimageentity")
     fun getImage(): LiveData<DatabaseDailyImageEntity>
 
+    @Query("delete from databasedailyimageentity where date <(:days)")
+    fun deleteOldsAsteroids(days: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertImage(vararg image: DatabaseDailyImageEntity)
 }
+
 
 @Database(entities = [DatabaseAsteroidEntity::class, DatabaseDailyImageEntity::class],
             version = 1,

@@ -6,16 +6,17 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryLightColor</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
         <item name ="android:fontFamily">@font/almendra</item>
         <item name ="fontFamily">@font/almendra</item>
+        <item name="textAppearanceHeadline5">@style/customHeadline5</item>
+        <item name="textAppearanceHeadline6">@style/customHeadline6</item>
     </style>
-    <style name="TextAppearance.TextViewTitle" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name= "android:textSize">24sp</item>
-        <item name= "android:textColor">@color/primaryTextColor</item>
+
+    <style name = "customHeadline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name ="android:textColor">@color/primaryTextColor</item>
     </style>
-    <style name="TextAppearance.TextViewSubtitle" parent="TextAppearance.TextViewTitle">
-        <item name= "android:textSize">18sp</item>
+
+    <style name="customHeadline6" parent="TextAppearance.MaterialComponents.Headline6">
         <item name= "android:textColor">@color/secondaryTextColor</item>
     </style>
 

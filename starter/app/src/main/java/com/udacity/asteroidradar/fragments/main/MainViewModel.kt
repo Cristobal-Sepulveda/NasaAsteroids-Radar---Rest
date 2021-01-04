@@ -38,6 +38,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 if(todayAsteroids.value == null){
                     _status.value = AsteroidsApiStatus.ERROR
                 }else{
+                    database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
                     _status.value = AsteroidsApiStatus.DONE
                 }
             }

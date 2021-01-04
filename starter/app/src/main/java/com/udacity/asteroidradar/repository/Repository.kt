@@ -17,11 +17,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.await
+import java.lang.Exception
 
 class Repository(private val database: DATABASE) {
 
-    val asteroidsFromDatabase:LiveData<List<Asteroid>> =
-            Transformations.map(database.asteroidsDao.getAsteroids()){
+    val asteroidsFromDatabase = Transformations.map(database.asteroidsDao.getAsteroids()){
                 it.asDomainModel()
             }
     var todayAsteroids= Transformations.map(database.asteroidsDao.todayAsteroids()){
@@ -30,12 +30,13 @@ class Repository(private val database: DATABASE) {
 
     val dailyImageFromDatabase= database.dailyImageDao.getImage()
 
-
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
-            val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
-            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
-
+            /*val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+            if(database.dailyImageDao.getImage().value != null){
+                database.dailyImageDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
+            }
+            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))*/
             val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),
@@ -43,7 +44,6 @@ class Repository(private val database: DATABASE) {
             val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
             database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
             database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-
         }
     }
 }

@@ -29,7 +29,7 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/spacing_normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_main_image_of_the_day">
@@ -47,23 +47,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/TextAppearance.TextViewTitle"
-                        android:text="@string/close_approach_data_title" />
+                        android:text="@string/close_approach_data_title"
+                        android:textAppearance="?attr/textAppearanceHeadline5"/>
 
                     <TextView
                         android:id="@+id/close_approach_date"
-                        style="@style/TextAppearance.TextViewSubtitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@{viewModel.selectedAsteroid.closeApproachDate}"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
                         tools:text="2020-02-01" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/spacing_normal"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -76,12 +76,12 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/TextAppearance.TextViewTitle"
-                            android:text="@string/absolute_magnitude_title" />
+                            android:text="@string/absolute_magnitude_title"
+                            android:textAppearance="?attr/textAppearanceHeadline5"/>
 
                         <TextView
                             android:id="@+id/absolute_magnitude"
-                            style="@style/TextAppearance.TextViewSubtitle"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -93,7 +93,7 @@
                         android:id="@+id/help_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:padding="@dimen/spacing_normal"
                         app:srcCompat="@drawable/ic_help_circle"
                         android:contentDescription="@string/helpButton"/>
 
@@ -102,45 +102,45 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    style="@style/TextAppearance.TextViewTitle"
-                    android:text="@string/estimated_diameter_title" />
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="@string/estimated_diameter_title"
+                    android:textAppearance="?attr/textAppearanceHeadline5"/>
 
                 <TextView
                     android:id="@+id/estimated_diameter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    style="@style/TextAppearance.TextViewSubtitle"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
                     app:kmUnitText="@{viewModel.selectedAsteroid.estimatedDiameter}"
                     tools:text="0.82 km" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    style="@style/TextAppearance.TextViewTitle"
-                    android:text="@string/relative_velocity_title" />
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="@string/relative_velocity_title"
+                    android:textAppearance="?attr/textAppearanceHeadline5"/>
 
                 <TextView
                     android:id="@+id/relative_velocity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    style="@style/TextAppearance.TextViewSubtitle"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
                     app:velocityText="@{viewModel.selectedAsteroid.relativeVelocity}"
                     tools:text="11.9 km/s" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextAppearance.TextViewTitle"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/distance_from_earth_title" />
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="@string/distance_from_earth_title"
+                    android:textAppearance="?attr/textAppearanceHeadline5"/>
 
                 <TextView
                     android:id="@+id/distance_from_earth"
-                    style="@style/TextAppearance.TextViewSubtitle"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -149,6 +149,5 @@
 
             </LinearLayout>
         </ScrollView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

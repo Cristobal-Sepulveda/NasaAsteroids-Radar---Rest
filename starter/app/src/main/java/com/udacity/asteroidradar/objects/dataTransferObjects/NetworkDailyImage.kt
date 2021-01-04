@@ -58,12 +58,12 @@ fun NetworkDailyImage.asDomainModel(networkDailyImage: NetworkDailyImage): Daily
 
 fun NetworkDailyImage.asDatabaseModel(networkDailyImage: NetworkDailyImage): DatabaseDailyImageEntity {
     return DatabaseDailyImageEntity(
-        date = networkDailyImage.date,
-        explanation = networkDailyImage.explanation,
-        hdurl = networkDailyImage.hdurl,
-        mediaType = networkDailyImage.mediaType,
-        serviceVersion = networkDailyImage.serviceVersion,
-        title = networkDailyImage.title,
-        url = networkDailyImage.url
+            date = networkDailyImage.date,
+            explanation = networkDailyImage.explanation,
+            hdurl = networkDailyImage.hdurl,
+            mediaType = networkDailyImage.mediaType,
+            serviceVersion = networkDailyImage.serviceVersion,
+            title = networkDailyImage.title,
+            url = networkDailyImage.url
     )
 }
