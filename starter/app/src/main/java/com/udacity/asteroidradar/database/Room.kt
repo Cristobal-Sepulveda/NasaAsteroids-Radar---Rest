@@ -38,10 +38,10 @@ interface AsteroidsDao {
     fun insertAllAsteroids(vararg asteroid: DatabaseAsteroidEntity)
 }
 
-fun AsteroidsDao.todayAsteroids():LiveData<List<DatabaseAsteroidEntity>>{
+/*fun AsteroidsDao.todayAsteroids():LiveData<List<DatabaseAsteroidEntity>>{
     val today = getNextSevenDaysFormattedDates().first()
     return getAsteroidsFromToday(today)
-}
+}*/
 
 @Dao
 interface DailyImageDao{

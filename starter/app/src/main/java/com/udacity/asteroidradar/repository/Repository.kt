@@ -1,14 +1,10 @@
 package com.udacity.asteroidradar.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.database.DATABASE
-import com.udacity.asteroidradar.database.todayAsteroids
-import com.udacity.asteroidradar.network.*
 import com.udacity.asteroidradar.objects.dataTransferObjects.*
 import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
-import com.udacity.asteroidradar.objects.domainObjects.DailyImage
 import com.udacity.asteroidradar.utils.AsteroidsApi
 import com.udacity.asteroidradar.utils.DailyImageApi
 import com.udacity.asteroidradar.utils.getNextSevenDaysFormattedDates
@@ -17,14 +13,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.await
-import java.lang.Exception
 
 class Repository(private val database: DATABASE) {
 
     val asteroidsFromDatabase = Transformations.map(database.asteroidsDao.getAsteroids()){
                 it.asDomainModel()
             }
-    var todayAsteroids= Transformations.map(database.asteroidsDao.todayAsteroids()){
+    var todayAsteroids= Transformations.map(database.asteroidsDao.getAsteroidsFromToday(
+            getNextSevenDaysFormattedDates().first())){
         it.asDomainModel()
     }
 
