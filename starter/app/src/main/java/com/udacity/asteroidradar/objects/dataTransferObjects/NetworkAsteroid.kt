@@ -19,7 +19,7 @@ package com.udacity.asteroidradar.objects.dataTransferObjects
 
 import com.squareup.moshi.JsonClass
 import com.udacity.asteroidradar.objects.databaseObjects.DatabaseAsteroidEntity
-import com.udacity.asteroidradar.network.Asteroid
+import com.udacity.asteroidradar.objects.domainObjects.Asteroid
 
 /**
  * DataTransferObjects go in this file. These are responsible for parsing responses from the server

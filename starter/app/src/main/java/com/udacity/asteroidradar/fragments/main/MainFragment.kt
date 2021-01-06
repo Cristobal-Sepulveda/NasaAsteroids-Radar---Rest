@@ -8,13 +8,14 @@ import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.Adapter.AsteroidAdapter
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import com.udacity.asteroidradar.network.Asteroid
 
 class MainFragment : Fragment() {
     /**
      * One way to delay creation of the viewModel until an appropriate lifecycle method is to use
      * lazy. This requires that viewModel not be referenced before onViewCreated(), which we
-     * do in this Fragment.
+     * do in this Fragment
+     *
+     * NOT NECESARRY THIS TIME.
      */
     /*private val viewModel: MainViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -23,6 +24,7 @@ class MainFragment : Fragment() {
         ViewModelProvider(this, MainViewModelFactory(activity.application))
                 .get(MainViewModel::class.java)
     }*/
+
     lateinit var viewModel: MainViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

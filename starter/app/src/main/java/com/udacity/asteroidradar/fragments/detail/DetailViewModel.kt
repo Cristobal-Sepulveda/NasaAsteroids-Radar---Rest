@@ -2,7 +2,7 @@ package com.udacity.asteroidradar.fragments.detail
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.network.Asteroid
+import com.udacity.asteroidradar.objects.domainObjects.Asteroid
 
 class DetailViewModel(asteroid: Asteroid, app: Application): AndroidViewModel(app){
     private val _selectedAsteroid = MutableLiveData<Asteroid>()

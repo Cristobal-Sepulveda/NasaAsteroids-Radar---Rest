@@ -7,6 +7,8 @@ import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.Repository
 import retrofit2.HttpException
 
+/** simple work planification*/
+
 class RefreshDataWorker(appContext: Context, params: WorkerParameters):
         CoroutineWorker(appContext,params){
 

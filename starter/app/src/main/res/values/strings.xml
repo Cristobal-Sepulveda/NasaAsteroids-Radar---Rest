@@ -22,4 +22,5 @@
     <string name="asteroid">Asteroid</string>
     <string name="helpButton">the Astronomical Unit (au) is a unit of length, roughly the distance from Earth to the Sun
     and equal to about 150 million kilometres (93 million miles)</string>
+    <string name="loading">Loading asteroid\'s data near earth</string>
 </resources>

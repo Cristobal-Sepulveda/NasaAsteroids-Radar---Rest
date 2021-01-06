@@ -26,4 +26,5 @@
     <string name="helpButton">La unidad astronomica (AU) es una unidad de longitud,
         Aproximadamente la distancia entre la tierra y el sol que es igual a 150 millones de
         kilometros(93 millones de millas)</string>
+    <string name="loading">Cargando la data de Asteroides Cercanos a la tierra</string>
 </resources>

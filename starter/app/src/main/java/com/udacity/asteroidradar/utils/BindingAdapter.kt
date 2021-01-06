@@ -29,8 +29,12 @@ import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.Adapter.AsteroidAdapter
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.fragments.main.AsteroidsApiStatus
-import com.udacity.asteroidradar.network.Asteroid
+import com.udacity.asteroidradar.objects.domainObjects.Asteroid
 import com.udacity.asteroidradar.objects.databaseObjects.DatabaseDailyImageEntity
+
+
+/** useful methods to bind viewModel variables (var or val) to the UI */
+
 
 /**
  * When there is no Asteroid data (data is null), hide the [RecyclerView], otherwise show it.

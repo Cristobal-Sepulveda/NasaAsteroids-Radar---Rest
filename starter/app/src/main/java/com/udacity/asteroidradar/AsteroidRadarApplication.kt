@@ -13,7 +13,7 @@ class AsteroidRadarApplication: Application() {
     /**
      * onCreate is called before the first screen is shown to the user.
      *
-     * Use it to setup any background tasks, running expensive setup operations in a background
+     * i use it to setup background tasks, running expensive setup operations in a background
      * thread to avoid delaying app start.
      */
     override fun onCreate() {
