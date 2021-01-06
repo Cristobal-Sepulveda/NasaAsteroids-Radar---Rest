@@ -28,11 +28,13 @@ class Repository(private val database: DATABASE) {
 
     suspend fun refreshDATABASE(){
         withContext(Dispatchers.IO) {
-            /*val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
-            if(database.dailyImageDao.getImage().value != null){
+            val dailyImageFromDatabase= database.dailyImageDao.getImage().value
+            val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+            if(dailyImageFromDatabase != null &&
+                    dailyImageFromDatabase.date < getNextSevenDaysFormattedDates().first()){
                 database.dailyImageDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
             }
-            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))*/
+            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
             val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),

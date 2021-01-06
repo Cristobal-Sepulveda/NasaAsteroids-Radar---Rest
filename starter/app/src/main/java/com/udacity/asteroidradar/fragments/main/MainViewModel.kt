@@ -28,24 +28,29 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToSelectedAsteroid: LiveData<Asteroid>
         get() = _navigateToSelectedAsteroid
 
+    //Using MediatorLiveData to observe Repo LiveData
+    val domainAsteroidsInScreen: MediatorLiveData<List<Asteroid>> = MediatorLiveData()
+
     init {
         viewModelScope.launch {
             _status.value = AsteroidsApiStatus.LOADING
             try {
                 repository.refreshDATABASE()
+                domainAsteroidsInScreen.addSource(weekAsteroids){
+                    domainAsteroidsInScreen.value = it
+                }
                 _status.value = AsteroidsApiStatus.DONE
             }catch(e:Exception){
-                if(todayAsteroids.value == null){
-                    _status.value = AsteroidsApiStatus.ERROR
-                }else{
-                    database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-                    _status.value = AsteroidsApiStatus.DONE
+                _status.value = AsteroidsApiStatus.ERROR
+                domainAsteroidsInScreen.addSource(weekAsteroids){
+                    domainAsteroidsInScreen.value = it
                 }
             }
         }
     }
-    var domainAsteroidsInScreen: MutableLiveData<List<Asteroid>> =
-            repository.asteroidsFromDatabase as MutableLiveData<List<Asteroid>>
+
+/*    var domainAsteroidsInScreen: MutableLiveData<List<Asteroid>> =
+            repository.asteroidsFromDatabase as MutableLiveData<List<Asteroid>>*/
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
     /** THESES ARE FOR NAVIGATE TO DETAILS FRAGMENT **/
