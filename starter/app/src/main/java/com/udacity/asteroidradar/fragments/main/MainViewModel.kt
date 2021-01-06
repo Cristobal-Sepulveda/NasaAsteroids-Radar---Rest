@@ -4,12 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.network.Asteroid
-import com.udacity.asteroidradar.objects.databaseObjects.asDomainModel
 import com.udacity.asteroidradar.repository.Repository
-import com.udacity.asteroidradar.utils.getNextSevenDaysFormattedDates
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 enum class AsteroidsApiStatus{LOADING, ERROR, DONE}
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -36,6 +32,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _status.value = AsteroidsApiStatus.LOADING
             try {
                 repository.refreshDATABASE()
+
                 domainAsteroidsInScreen.addSource(weekAsteroids){
                     domainAsteroidsInScreen.value = it
                 }

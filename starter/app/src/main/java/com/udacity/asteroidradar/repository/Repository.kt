@@ -16,6 +16,22 @@ import retrofit2.await
 
 class Repository(private val database: DATABASE) {
 
+    suspend fun refreshDATABASE(){
+        withContext(Dispatchers.IO) {
+            val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
+            database.dailyImageDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
+            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
+
+            val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
+                    getNextSevenDaysFormattedDates().first(),
+                    getNextSevenDaysFormattedDates().last(),
+                    Constants.ASTEROIDSAPI_KEY).await()
+            val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
+            database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
+            database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
+        }
+    }
+
     val asteroidsFromDatabase = Transformations.map(database.asteroidsDao.getAsteroids()){
                 it.asDomainModel()
             }
@@ -26,22 +42,5 @@ class Repository(private val database: DATABASE) {
 
     val dailyImageFromDatabase= database.dailyImageDao.getImage()
 
-    suspend fun refreshDATABASE(){
-        withContext(Dispatchers.IO) {
-            val dailyImageFromDatabase= database.dailyImageDao.getImage().value
-            val dailyImageResponse = DailyImageApi.RETROFIT_SERVICEDAILYIMAGE.getImage().await()
-            if(dailyImageFromDatabase != null &&
-                    dailyImageFromDatabase.date < getNextSevenDaysFormattedDates().first()){
-                database.dailyImageDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-            }
-            database.dailyImageDao.insertImage(dailyImageResponse.asDatabaseModel(dailyImageResponse))
-            val asteroidsList = AsteroidsApi.RETROFIT_SERVICEASTEROID.getAsteroids(
-                    getNextSevenDaysFormattedDates().first(),
-                    getNextSevenDaysFormattedDates().last(),
-                    Constants.ASTEROIDSAPI_KEY).await()
-            val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
-            database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
-            database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())
-        }
-    }
+
 }
