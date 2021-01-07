@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.utils
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.objects.dataTransferObjects.NetworkDailyImage
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -12,7 +13,7 @@ import retrofit2.http.GET
  *  a DataTransfer Object */
 
 interface DailyImageApiService{
-    @GET(Constants.IMAGEAPI_KEY)
+    @GET(Constants.DAILYIMAGE_API_KEY)
     fun getDailyImage(): Call<NetworkDailyImage>
 }
 

@@ -40,7 +40,7 @@ class Repository(private val database: DATABASE) {
             val asteroidsList = AsteroidsApi.RETROFIT_SERVICE_ASTEROID.getAsteroids(
                     getNextSevenDaysFormattedDates().first(),
                     getNextSevenDaysFormattedDates().last(),
-                    Constants.ASTEROIDSAPI_KEY).await()
+                    Constants.ASTEROIDS_API_KEY).await()
             val asteroidsParsed = parseAsteroidsJsonResult(JSONObject(asteroidsList))
             database.asteroidsDao.insertAllAsteroids(*asteroidsParsed.asDatabaseModel())
             database.asteroidsDao.deleteOldsAsteroids(getNextSevenDaysFormattedDates().first())

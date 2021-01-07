@@ -5,6 +5,14 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-android-extensions'
 
+/** this is for use api Keys from local.properties, is a way to protect my keys, so, if
+ * you want to use this app, you must put your keys there. */
+/*def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+localProperties.getProperty("ASTEROIDS_API_KEY")
+localProperties.getProperty("DAILYIMAGE_API_KEY")*/
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
@@ -19,9 +27,15 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'ASTEROIDS_API_KEY', aak
+        it.buildConfigField 'String', 'DAILYIMAGE_API_KEY', diak
+    }
+
     buildFeatures {
         dataBinding true
     }
@@ -33,6 +47,8 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
+
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
