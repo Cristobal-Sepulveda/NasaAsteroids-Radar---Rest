@@ -67,3 +67,4 @@ fun NetworkDailyImage.asDatabaseModel(networkDailyImage: NetworkDailyImage): Dat
             url = networkDailyImage.url
     )
 }
+//
