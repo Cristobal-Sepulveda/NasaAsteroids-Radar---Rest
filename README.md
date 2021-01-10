@@ -6,7 +6,9 @@ Asteroid Radar
 
 YOU NEED TO HAVE YOUR OWN NASA API_KEY TO TEST THIS APP. YOU CAN GET ONE IN https://api.nasa.gov/
 THEN, IN GRADLE.PROPERTIES, add you key at the end of the file in this format:
+
 aak="YOUR_API_KEY"
+
 diak="apod?api_key=YOUR_API_KEY"
 
 Asteroid Radar is an app to view the asteroids detected by NASA that pass near Earth, you can view all the detected asteroids in a period of time, their data (Size, velocity, distance to Earth) and if they are potentially hazardous.
