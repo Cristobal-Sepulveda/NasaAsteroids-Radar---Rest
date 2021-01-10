@@ -11,8 +11,3 @@
 /captures
 .externalNativeBuild
 /gradle.properties
-
-
-# gradle
-gradle/
-gradlew*
